@@ -61,15 +61,17 @@ angular.module('pigOnline', [])
  		$scope.pass = function() {
  			$scope.total1 += $scope.round1;
  			$scope.round1 = 0;
+ 			$scope.number1 = 0;
  			$scope.total2 += $scope.round2;
  			$scope.round2 = 0;
- 			$scope.play1 = !$scope.play1;
+ 			$scope.number2 = 0;
  			if($scope.total1 >= 100) {
  				$scope.winner = "Player 1 wins!"
  			}
  			if($scope.total2 >= 100) {
  				$scope.winner = "Player 2 wins!"
  			}
+ 			 $scope.play1 = !$scope.play1;
  		}
  	});
 </script>
