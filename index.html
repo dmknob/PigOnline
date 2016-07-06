@@ -2,20 +2,31 @@
 <html>
 <title>Pig Online</title>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+<style type="text/css">
+	
+</style>
 <body>
 
-<div data-ng-app="pigOnline" ng-controller="myCtrl" ng-init="number1=0;number2=0;total1=0;total2=0"> 
+<div data-ng-app="pigOnline" ng-controller="myCtrl" ng-init="number1=0;number2=0;round1=0;round2=0;total1=0;total2=0;play1=true"> 
+	<div>
+
+	</div>
 	<div class="player" style="float:left">Player 1:
 		<h2>{{number1}}</h2>
-		<button ng-click="roll1()">Roll 1</button>
-		<button ng-click="pass1()">Pass 1</button>
+		<button ng-disabled="!play1" ng-click="roll1()">Roll 1</button>
+		<button ng-disabled="!play1" ng-click="pass()">Hold 1</button>
+		<h2>Round: {{round1}}</h2>
 		<h2>Total: {{total1}}</h2>
 	</div>
 	<div  class="player" style="float:left">Player 2:
 		<h2>{{number2}}</h2>
-		<button ng-click="roll2()">Roll 2</button>
-		<button ng-click="pass2()">Pass 2</button>
+		<button ng-disabled="play1" ng-click="roll2()">Roll 2</button>
+		<button ng-disabled="play1" ng-click="pass()">Hold 2</button>
+		<h2>Round: {{round2}}</h2>
 		<h2>Total: {{total2}}</h2>
+	</div>
+	<div>
+		<h2> {{winner}}</h2>
 	</div>
 </div>
 <script>
@@ -26,10 +37,11 @@ angular.module('pigOnline', [])
   			.then(function(response) {
       			$scope.number1 = parseInt(response.data);
       			if($scope.number1 == 1) {
-      				$scope.total1 = 0;
+      				$scope.round1 = 0;
+      				$scope.pass();
       			}
       			else {
-      				$scope.total1 += $scope.number1;
+      				$scope.round1 += $scope.number1;
       			}
   			});
   		}
@@ -38,12 +50,26 @@ angular.module('pigOnline', [])
 	  		.then(function(response) {
     	  		$scope.number2 = parseInt(response.data);
       			if($scope.number2 == 1) {
-      				$scope.total2 = 0;
+      				$scope.round2 = 0;
+      				$scope.pass();
       			}
       			else {
-      				$scope.total2 += $scope.number2;
+      				$scope.round2 += $scope.number2;
       			}
   			});
+ 		}
+ 		$scope.pass = function() {
+ 			$scope.total1 += $scope.round1;
+ 			$scope.round1 = 0;
+ 			$scope.total2 += $scope.round2;
+ 			$scope.round2 = 0;
+ 			$scope.play1 = !$scope.play1;
+ 			if($scope.total1 >= 100) {
+ 				$scope.winner = "Player 1 wins!"
+ 			}
+ 			if($scope.total2 >= 100) {
+ 				$scope.winner = "Player 2 wins!"
+ 			}
  		}
  	});
 </script>
