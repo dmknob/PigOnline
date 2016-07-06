@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<title>Pig Online</title>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+<body>
+
+<div data-ng-app="pigOnline" ng-controller="myCtrl" ng-init="number1=0;number2=0;total1=0;total2=0"> 
+	<div class="player" style="float:left">Player 1:
+		<h2>{{number1}}</h2>
+		<button ng-click="roll1()">Roll 1</button>
+		<button ng-click="pass1()">Pass 1</button>
+		<h2>Total: {{total1}}</h2>
+	</div>
+	<div  class="player" style="float:left">Player 2:
+		<h2>{{number2}}</h2>
+		<button ng-click="roll2()">Roll 2</button>
+		<button ng-click="pass2()">Pass 2</button>
+		<h2>Total: {{total2}}</h2>
+	</div>
+</div>
+<script>
+angular.module('pigOnline', [])
+	.controller('myCtrl', function($scope, $http) {
+  		$scope.roll1 = function() {
+  			$http.get("http://155.254.34.30:12345")
+  			.then(function(response) {
+      			$scope.number1 = parseInt(response.data);
+      			if($scope.number1 == 1) {
+      				$scope.total1 = 0;
+      			}
+      			else {
+      				$scope.total1 += $scope.number1;
+      			}
+  			});
+  		}
+	 	$scope.roll2 = function() {
+  			$http.get("http://155.254.34.30:12345")
+	  		.then(function(response) {
+    	  		$scope.number2 = parseInt(response.data);
+      			if($scope.number2 == 1) {
+      				$scope.total2 = 0;
+      			}
+      			else {
+      				$scope.total2 += $scope.number2;
+      			}
+  			});
+ 		}
+ 	});
+</script>
+
+</body>
+</html>
