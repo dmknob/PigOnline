@@ -31,49 +31,54 @@
 </div>
 <script>
 angular.module('pigOnline', [])
-	.controller('myCtrl', function($scope, $http) {
-  		$scope.roll1 = function() {
-  			$http.get("http://155.254.34.30:12345")
-  			.then(function(response) {
-      			$scope.number1 = parseInt(response.data);
-      			if($scope.number1 == 1) {
-      				$scope.round1 = 0;
-      				$scope.pass();
-      			}
-      			else {
-      				$scope.round1 += $scope.number1;
-      			}
-  			});
-  		}
-	 	$scope.roll2 = function() {
-  			$http.get("http://155.254.34.30:12345")
-	  		.then(function(response) {
-    	  		$scope.number2 = parseInt(response.data);
-      			if($scope.number2 == 1) {
-      				$scope.round2 = 0;
-      				$scope.pass();
-      			}
-      			else {
-      				$scope.round2 += $scope.number2;
-      			}
-  			});
+	.controller('myCtrl', UserControler);
+
+function UserControler($scope, $http) {
+ 	$scope.roll1 = function() {
+ 		$http.get("http://155.254.34.30:12345")
+  		.then(function(response) {
+      		$scope.number1 = parseInt(response.data);
+      		if($scope.number1 == 1) {
+      			$scope.round1 = 0;
+      			$scope.pass();
+      		}
+      		else {
+      			$scope.round1 += $scope.number1;
+     		}
+  		});
+	}
+	
+	$scope.roll2 = function() {
+  		$http.get("http://155.254.34.30:12345")
+	  	.then(function(response) {
+    	  	$scope.number2 = parseInt(response.data);
+      		if($scope.number2 == 1) {
+      			$scope.round2 = 0;
+      			$scope.pass();
+      		}
+      		else {
+      			$scope.round2 += $scope.number2;
+      		}
+  		});
+  	}
+ 	
+ 	$scope.pass = function() {
+ 		$scope.total1 += $scope.round1;
+ 		$scope.round1 = 0;
+ 		$scope.number1 = 0;
+ 		$scope.total2 += $scope.round2;
+ 		$scope.round2 = 0;
+ 		$scope.number2 = 0;
+ 		if($scope.total1 >= 100) {
+ 			$scope.winner = "Player 1 wins!"
  		}
- 		$scope.pass = function() {
- 			$scope.total1 += $scope.round1;
- 			$scope.round1 = 0;
- 			$scope.number1 = 0;
- 			$scope.total2 += $scope.round2;
- 			$scope.round2 = 0;
- 			$scope.number2 = 0;
- 			if($scope.total1 >= 100) {
- 				$scope.winner = "Player 1 wins!"
- 			}
- 			if($scope.total2 >= 100) {
- 				$scope.winner = "Player 2 wins!"
- 			}
- 			 $scope.play1 = !$scope.play1;
+ 		if($scope.total2 >= 100) {
+ 			$scope.winner = "Player 2 wins!"
  		}
- 	});
+ 			$scope.play1 = !$scope.play1;
+ 	}
+ }
+UserControler['$inject'] = ['$scope', '$http'];
 </script>
 
 </body>
