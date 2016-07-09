@@ -81,14 +81,14 @@ function UserControler($scope, $http, $window) {
  		$scope.number2 = 0;
  		if($scope.total1 >= 100) {
  			$scope.winner = "Player 1 wins!"
- 			reset = confirm("Restart the game?");
+ 			reset = confirm("Player 1 wins! Restart the game?");
  			if (reset) {
  				$window.location.reload();
  			}
  		}
  		if($scope.total2 >= 100) {
  			$scope.winner = "Player 2 wins!"
- 			reset = confirm("Restart the game?");
+ 			reset = confirm("Player 2 wins! Restart the game?");
  			if (reset) {
  				$window.location.reload();
  			}
