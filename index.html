@@ -12,14 +12,20 @@
 
 	</div>
 	<div class="player" style="float:left">Player 1:
-		<h2>{{number1}}</h2>
+		<div>
+			<h2>{{number1}}</h2>
+			<img ng-src="{{dice1}}"/>
+		</div>
 		<button ng-disabled="!play1" ng-click="roll1()">Roll 1</button>
 		<button ng-disabled="!play1" ng-click="pass()">Hold 1</button>
 		<h2>Round: {{round1}}</h2>
 		<h2>Total: {{total1}}</h2>
 	</div>
 	<div  class="player" style="float:left">Player 2:
-		<h2>{{number2}}</h2>
+		<div>
+			<h2>{{number2}}</h2>
+			<img ng-src="{{dice2}}"/>
+		</div>
 		<button ng-disabled="play1" ng-click="roll2()">Roll 2</button>
 		<button ng-disabled="play1" ng-click="pass()">Hold 2</button>
 		<h2>Round: {{round2}}</h2>
@@ -33,11 +39,13 @@
 angular.module('pigOnline', [])
 	.controller('myCtrl', UserControler);
 
-function UserControler($scope, $http) {
+function UserControler($scope, $http, $window) {
  	$scope.roll1 = function() {
  		$http.get("http://155.254.34.30:12345")
   		.then(function(response) {
       		$scope.number1 = parseInt(response.data);
+      		console.log($scope.number1);
+      		$scope.dice1="http://www.random.org/dice/dice" + $scope.number1 + ".png"
       		if($scope.number1 == 1) {
       			$scope.round1 = 0;
       			$scope.pass();
@@ -52,6 +60,8 @@ function UserControler($scope, $http) {
   		$http.get("http://155.254.34.30:12345")
 	  	.then(function(response) {
     	  	$scope.number2 = parseInt(response.data);
+    	  	console.log($scope.number2);
+    	  	$scope.dice2="http://www.random.org/dice/dice" + $scope.number2 + ".png"
       		if($scope.number2 == 1) {
       			$scope.round2 = 0;
       			$scope.pass();
@@ -71,15 +81,23 @@ function UserControler($scope, $http) {
  		$scope.number2 = 0;
  		if($scope.total1 >= 100) {
  			$scope.winner = "Player 1 wins!"
+ 			reset = confirm("Restart the game?");
+ 			if (reset) {
+ 				$window.location.reload();
+ 			}
  		}
  		if($scope.total2 >= 100) {
  			$scope.winner = "Player 2 wins!"
+ 			reset = confirm("Restart the game?");
+ 			if (reset) {
+ 				$window.location.reload();
+ 			}
  		}
  			$scope.play1 = !$scope.play1;
  	}
- }
-UserControler['$inject'] = ['$scope', '$http'];
-</script>
 
+ }
+UserControler['$inject'] = ['$scope', '$http', '$window'];
+</script>
 </body>
 </html>
